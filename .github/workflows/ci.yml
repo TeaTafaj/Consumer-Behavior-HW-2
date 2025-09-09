@@ -25,4 +25,4 @@ jobs:
 
       - name: Lint (flake8)
         run: |
-          flake8 Consumer_Behavior.py test_consumer_behavior.py_
+          flake8
