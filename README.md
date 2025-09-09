@@ -22,7 +22,7 @@ This project is part of a two-week data engineering assignment. It explores **co
 
 ## 🎯 Hypothesis  
 
-We expected **smartphone shoppers** to have higher engagement with ads than desktop or tablet users.  
+Shoppers using Smartphone devices have higher engagement with ads than shoppers using desktop.   
 
 ---
 
