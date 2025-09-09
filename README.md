@@ -4,6 +4,7 @@
 [![CI](https://github.com/TeaTafaj/Consumer-Behavior-HW-2/actions/workflows/ci.yml/badge.svg)](https://github.com/TeaTafaj/Consumer-Behavior-HW-2/actions/workflows/ci.yml)  
 
 This project is part of a two-week data engineering assignment. It explores **consumer behavior** using Python (Pandas, Matplotlib, scikit-learn). The analysis investigates the relationship between **device type** and **ad engagement**, includes data cleaning, filtering, grouping, visualization, and a first machine learning experiment.  
+Dataset: Ecommerce Consumer Behavior Data from Kaggle, https://www.kaggle.com/datasets/salahuddinahmedshuvo/ecommerce-consumer-behavior-analysis-data
 
 ---
 
@@ -81,21 +82,21 @@ make test      # run pytest tests
 make run       # run the analysis
 make clean     # clean up cache and generated files
 
-✅ Tests
+#✅ Tests
 
-pytest provides simple tests, e.g.:
+-pytest provides simple tests, e.g.:
 
-Ensure dataset loads correctly
+-Ensure dataset loads correctly
 
-Confirm cleaning step adds the expected Engagement_with_Ads_Score column
+-Confirm cleaning step adds the expected Engagement_with_Ads_Score column
 
 Run: pytest -q
 
-🤖 Continuous Integration
+#🤖 Continuous Integration
 
-This repo uses GitHub Actions for CI:
-Installs dependencies
-Runs flake8 linting
-Executes pytest tests
-Smoke-runs the analysis script
-The build badge above reflects the latest workflow status.
+-This repo uses GitHub Actions for CI:
+-Installs dependencies
+-Runs flake8 linting
+-Executes pytest tests
+-Smoke-runs the analysis script
+-The build badge above reflects the latest workflow status.
