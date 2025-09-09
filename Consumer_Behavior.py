@@ -4,6 +4,9 @@
 
 import pandas as pd
 import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
 
 # 1) Load
 df = pd.read_csv("Ecommerce_Consumer_Behavior_Analysis_Data.csv")
@@ -59,10 +62,6 @@ plt.tight_layout()
 plt.savefig("ads_by_device.png")
 plt.show()
 
-
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score
 
 # 7) Simple ML: predict if engagement is High vs Not High using device type
 
