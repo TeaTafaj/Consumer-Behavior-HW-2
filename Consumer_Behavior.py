@@ -1,7 +1,6 @@
 # Data_Eng Assignment
 # Hypothesis: Mobile Users have a higher engagement with ads
 
-
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
@@ -18,61 +17,61 @@ print("---- INFO ----")
 print(df.info())
 print("---- DESCRIBE ----")
 print(df.describe())
+print("Missing Engagement (raw):", df["Engagement_with_Ads"].isna().sum())
 
-# 3) Clean the columns
-#    Drop rows with missing engagement, and standardize text
-df = df.dropna(subset=["Engagement_with_Ads"])
-df["Engagement_with_Ads"] = df["Engagement_with_Ads"].str.strip().str.title()
+# 3) Clean (do NOT drop globally)
+#    Standardize text, keep true blanks as NaN, and keep the string "None" as a valid category
+df["Engagement_with_Ads"] = (
+    df["Engagement_with_Ads"]
+    .astype("string")              # preserves true missing as <NA>, not "nan"
+    .str.strip()
+    .str.title()
+)
 
-# Sanity checks
 print("Unique devices:", df["Device_Used_for_Shopping"].unique())
-print("Unique engagement levels:", df["Engagement_with_Ads"].unique())
+print("Unique engagement levels (cleaned):", df["Engagement_with_Ads"].unique())
 
-
-# 4) Map engagement to numeric (1=Low, 2=Medium, 3=High)
-engagement_map = {"Low": 1, "Medium": 2, "High": 3}
+# Map engagement to numeric: None=0, Low=1, Medium=2, High=3
+engagement_map = {"None": 0, "Low": 1, "Medium": 2, "High": 3}
 df["Engagement_with_Ads_Score"] = df["Engagement_with_Ads"].map(engagement_map)
+print("Unmapped after mapping (should be only true blanks):",
+      df["Engagement_with_Ads_Score"].isna().sum())
 
-# Check mapping worked
-print("Unmapped after mapping:", df["Engagement_with_Ads_Score"].isna().sum())
-
-# 4) Filter the dataset, Smartphone users
+# 4) Simple filter example (Smartphone users)
 smartphone_users = df[df["Device_Used_for_Shopping"] == "Smartphone"]
-
 print("---- FILTER: Smartphone Users ----")
 print(smartphone_users.head())
 print("Number of smartphone users:", len(smartphone_users))
 
-
 # 5) Groupby: average engagement score by device
+#    mean() ignores true NaN; "None" contributes as 0 (by design)
 device_ads = (
     df.groupby("Device_Used_for_Shopping")["Engagement_with_Ads_Score"]
-    .mean()
-    .sort_values(ascending=False)
+      .mean()
+      .sort_values(ascending=False)
 )
-print("---- GROUPBY: Avg Engagement (1=Low,3=High) by Device ----")
+print("---- GROUPBY: Avg Engagement (0=None, 3=High) by Device ----")
 print(device_ads)
 
 # 6) Plot
 device_ads.plot(kind="bar")
-plt.title("Average Engagement with Ads by Device (1=Low, 3=High)")
+plt.title("Average Engagement with Ads by Device (0=None, 3=High)")
 plt.ylabel("Average Engagement Score")
 plt.xlabel("Device")
 plt.tight_layout()
 plt.savefig("ads_by_device.png")
 plt.show()
 
-
-# 7) Simple ML: predict if engagement is High vs Not High using device type
-
-# Target: 1 if High, 0 if Medium/Low
-df["Engagement_High"] = (df["Engagement_with_Ads"] == "High").astype(int)
+# 7) Simple ML: predict High vs Not High from device type
+#    Keep rows with a valid label; treat None/Low/Medium as NOT HIGH (0)
+df_ml = df[df["Engagement_with_Ads"].notna()].copy()
+df_ml["Engagement_High"] = (df_ml["Engagement_with_Ads"] == "High").astype(int)
 
 # Features: one-hot encode device type
-X = pd.get_dummies(df["Device_Used_for_Shopping"], drop_first=True)
-y = df["Engagement_High"]
+X = pd.get_dummies(df_ml["Device_Used_for_Shopping"], drop_first=True)
+y = df_ml["Engagement_High"]
 
-# Split into train/test
+# Train/test split
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42
 )
