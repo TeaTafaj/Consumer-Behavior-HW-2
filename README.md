@@ -3,7 +3,7 @@
 
 [![CI](https://github.com/TeaTafaj/Consumer-Behavior-HW-2/actions/workflows/ci.yml/badge.svg)](https://github.com/TeaTafaj/Consumer-Behavior-HW-2/actions/workflows/ci.yml)  
 
-This project is part of a two-week data engineering assignment. It explores **consumer behavior** using Python (Pandas, Matplotlib, scikit-learn). The analysis investigates the relationship between **device type** and **ad engagement**, includes data cleaning, filtering, grouping, visualization, and a first machine learning experiment.  
+This project explores **consumer behavior** using Python (Pandas, Matplotlib, scikit-learn). The analysis investigates the relationship between **device type** and **ad engagement**, includes data cleaning, filtering, grouping, visualization, and a first machine learning experiment.  
 Dataset: Ecommerce Consumer Behavior Data from Kaggle, https://www.kaggle.com/datasets/salahuddinahmedshuvo/ecommerce-consumer-behavior-analysis-data
 
 ---
@@ -36,8 +36,8 @@ Shoppers using Smartphone devices have higher engagement with ads than shoppers 
 
 ### 2. Data Cleaning  
 - Dropped rows with missing `Engagement_with_Ads` values  
-- Standardized text values (`Low`, `Medium`, `High`)  
-- Converted engagement to numeric scores (`Low=1, Medium=2, High=3`)  
+- Standardized text values ('None', `Low`, `Medium`, `High`)  
+- Converted engagement to numeric scores ('None'=0,`Low=1, Medium=2, High=3`)  
 
 ### 3. Filtering  
 - Extracted subsets of data (e.g., only smartphone users)  
@@ -92,11 +92,3 @@ make clean     # clean up cache and generated files
 
 Run: pytest -q
 
-#🤖 Continuous Integration
-
--This repo uses GitHub Actions for CI:
--Installs dependencies
--Runs flake8 linting
--Executes pytest tests
--Smoke-runs the analysis script
--The build badge above reflects the latest workflow status.

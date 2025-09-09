@@ -10,7 +10,7 @@ lint:
 
 # run tests
 test:
-	pytest -q
+	python -m pytest -vv --cov=hello test_consumer_behavior.py
 
 # run the main analysis
 run:
@@ -22,3 +22,6 @@ all: lint test run
 # clean up cache and generated files
 clean:
 	rm -rf __pycache__ .pytest_cache *.png
+
+
+
