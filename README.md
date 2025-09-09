@@ -1,4 +1,101 @@
-[![CI](https://github.com/TeaTafaj/Consumer-Behavior-HW-2/actions/workflows/ci.yml/badge.svg)](https://github.com/TeaTafaj/Consumer-Behavior-HW-2/actions/workflows/ci.yml)
 
-# Consumer-Behavior-HW-2
-This assignment is the first part of a two-week project.. Perform basic data analysis using Pandas (and Polars for advanced students). This includes importing data, inspecting it, applying filters and groupings, and optionally visualizing it. 
+# Consumer Behavior HW 2  
+
+[![CI](https://github.com/TeaTafaj/Consumer-Behavior-HW-2/actions/workflows/ci.yml/badge.svg)](https://github.com/TeaTafaj/Consumer-Behavior-HW-2/actions/workflows/ci.yml)  
+
+This project is part of a two-week data engineering assignment. It explores **consumer behavior** using Python (Pandas, Matplotlib, scikit-learn). The analysis investigates the relationship between **device type** and **ad engagement**, includes data cleaning, filtering, grouping, visualization, and a first machine learning experiment.  
+
+---
+
+## 📂 Repository Structure  
+
+├── Consumer_Behavior.py # main analysis script
+├── Ecommerce_Consumer_Behavior_Analysis_Data.csv # dataset
+├── requirements.txt # dependencies
+├── Makefile # automation commands
+├── test_consumer_behavior.py # simple pytest tests
+├── .github/workflows/ci.yml # GitHub Actions CI workflow
+└── README.md # this file
+
+
+---
+
+## 🎯 Hypothesis  
+
+We expected **smartphone shoppers** to have higher engagement with ads than desktop or tablet users.  
+
+---
+
+## 🔎 Steps Performed  
+
+### 1. Data Import & Inspection  
+- Loaded CSV using Pandas  
+- Explored dataset with `.head()`, `.info()`, `.describe()`  
+- Checked for missing values and unique categories  
+
+### 2. Data Cleaning  
+- Dropped rows with missing `Engagement_with_Ads` values  
+- Standardized text values (`Low`, `Medium`, `High`)  
+- Converted engagement to numeric scores (`Low=1, Medium=2, High=3`)  
+
+### 3. Filtering  
+- Extracted subsets of data (e.g., only smartphone users)  
+
+### 4. Grouping  
+- Grouped by `Device_Used_for_Shopping`  
+- Computed **average engagement score per device**  
+
+### 5. Visualization  
+- Bar chart comparing engagement score by device  
+- Output file: **`ads_by_device.png`**  
+
+### 6. Machine Learning Experiment  
+- Logistic Regression: predict whether a user’s ad engagement is **High (yes/no)** from device type  
+- Accuracy: ~**64%**  
+- Coefficients indicated desktop users were slightly more likely to have high engagement  
+
+---
+
+## 📊 Findings  
+
+- **Result:** contrary to the initial hypothesis, **desktop users** had the highest average engagement (≈2.15), compared to smartphones (≈2.01) and tablets (≈2.00).  
+- **Interpretation:** this dataset suggests that desktop shoppers may engage more with ads than mobile users — possibly due to a more focused browsing context.  
+
+![Ads by Device](ads_by_device.png)  
+
+---
+
+## ⚙️ Usage  
+
+### Prerequisites  
+- Python 3.11+  
+- Install dependencies:  
+```bash
+pip install -r requirements.txt
+
+Run the analysis
+python Consumer_Behavior.py
+make install   # install dependencies
+make lint      # run flake8 checks
+make test      # run pytest tests
+make run       # run the analysis
+make clean     # clean up cache and generated files
+
+✅ Tests
+
+pytest provides simple tests, e.g.:
+
+Ensure dataset loads correctly
+
+Confirm cleaning step adds the expected Engagement_with_Ads_Score column
+
+Run: pytest -q
+
+🤖 Continuous Integration
+
+This repo uses GitHub Actions for CI:
+Installs dependencies
+Runs flake8 linting
+Executes pytest tests
+Smoke-runs the analysis script
+The build badge above reflects the latest workflow status.
