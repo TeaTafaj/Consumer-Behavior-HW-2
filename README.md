@@ -140,3 +140,6 @@ docker run --rm -it -v ${PWD}:/app -w /app consumer-behavior make lint
 **Notes**
 - The container uses a headless Matplotlib backend, so plots save to files (e.g., `ads_by_device.png`) without a display.
 
+**Test Screenshot**
+![alt text](image.png)
+
