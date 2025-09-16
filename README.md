@@ -92,3 +92,51 @@ make clean     # clean up cache and generated files
 
 Run: pytest -q
 
+## 🐳 Docker
+
+### Setup
+- **Prereqs**: Install Docker (Docker Desktop on Windows/macOS) and make sure the engine is running.
+- Build the image (from the repo root):
+```bash
+docker build -t consumer-behavior .
+```
+
+### Use
+**Run the analysis (default command in the image):**
+```bash
+docker run --rm consumer-behavior
+```
+
+**Run with live code edits (mount your working directory)**
+- macOS/Linux:
+```bash
+docker run --rm -it -v "$(pwd)":/app -w /app consumer-behavior python Consumer_Behavior.py
+```
+- Windows PowerShell:
+```powershell
+docker run --rm -it -v ${PWD}:/app -w /app consumer-behavior python Consumer_Behavior.py
+```
+
+**Run tests (pytest)**
+```bash
+docker run --rm -it -v "$(pwd)":/app -w /app consumer-behavior pytest -q
+```
+
+**Run Makefile targets inside the container**
+(Requires the provided Dockerfile—which includes `make`—to be built as above.)
+- macOS/Linux:
+```bash
+docker run --rm -it -v "$(pwd)":/app -w /app consumer-behavior make test     # runs pytest
+docker run --rm -it -v "$(pwd)":/app -w /app consumer-behavior make run      # runs analysis
+docker run --rm -it -v "$(pwd)":/app -w /app consumer-behavior make lint     # runs flake8 (if defined)
+```
+- Windows PowerShell:
+```powershell
+docker run --rm -it -v ${PWD}:/app -w /app consumer-behavior make test
+docker run --rm -it -v ${PWD}:/app -w /app consumer-behavior make run
+docker run --rm -it -v ${PWD}:/app -w /app consumer-behavior make lint
+```
+
+**Notes**
+- The container uses a headless Matplotlib backend, so plots save to files (e.g., `ads_by_device.png`) without a display.
+
