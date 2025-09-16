@@ -3,3 +3,4 @@ matplotlib
 pytest
 scikit-learn
 flake8
+jupyter
