@@ -23,5 +23,3 @@ all: lint test run
 clean:
 	rm -rf __pycache__ .pytest_cache *.png
 
-
-
