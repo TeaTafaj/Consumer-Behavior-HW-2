@@ -25,6 +25,7 @@ def clean_engagement(consumer_data: pd.DataFrame) -> pd.DataFrame:
     consumer_data["Engagement_with_Ads_Score"] = consumer_data[
         "Engagement_with_Ads"
     ].map(ENGAGEMENT_MAP)
+
     return consumer_data
 
 
@@ -59,7 +60,10 @@ def prepare_ml_frame(consumer_data: pd.DataFrame) -> Tuple[pd.DataFrame, pd.Seri
     consumer_data_ml["Engagement_High"] = (
         consumer_data_ml["Engagement_with_Ads"] == "High"
     ).astype(int)
-    X = pd.get_dummies(consumer_data_ml["Device_Used_for_Shopping"], drop_first=True)
+    X = pd.get_dummies(
+        consumer_data_ml["Device_Used_for_Shopping"],
+        drop_first=True,
+    )
     y = consumer_data_ml["Engagement_High"]
     return X, y
 
@@ -89,7 +93,8 @@ def main() -> None:
     print("---- DESCRIBE ----")
     print(consumer_data.describe())
     print(
-        "Missing Engagement (raw):", consumer_data["Engagement_with_Ads"].isna().sum()
+        "Missing Engagement (raw):",
+        consumer_data["Engagement_with_Ads"].isna().sum(),
     )
 
     # 3) Clean
@@ -120,7 +125,10 @@ def main() -> None:
     X, y = prepare_ml_frame(consumer_data)
     model, acc = train_and_eval_logreg(X, y)
     print("---- ML Experiment ----")
-    print("Accuracy of predicting High engagement from Device:", acc)
+    print(
+        "Accuracy of predicting High engagement from Device:",
+        acc,
+    )
     print("Model coefficients:", model.coef_)
     print("Intercept:", model.intercept_)
     print("Feature columns:", X.columns.tolist())

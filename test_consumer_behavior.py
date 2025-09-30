@@ -1,10 +1,6 @@
-import os
-
-
 from Consumer_Behavior import (
     load_data,
     clean_engagement,
-    filter_smartphone_users,
     group_device_ads_mean,
     plot_device_ads,
     prepare_ml_frame,
