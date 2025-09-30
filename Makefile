@@ -1,26 +1,26 @@
-FROM python:3.11-slim
+.PHONY: install format lint test run clean
 
-# non-interactive apt & headless matplotlib
-ENV DEBIAN_FRONTEND=noninteractive \
-    MPLBACKEND=Agg \
-    PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1 \
-    PIP_NO_CACHE_DIR=1
+install:
+	python -m pip install --upgrade pip
+	pip install -r requirements.txt
+	pip install black flake8 pytest
 
-WORKDIR /app
+format:
+	black .
 
-# install make so you can run your Makefile targets inside the container
-RUN apt-get update && apt-get install -y --no-install-recommends make \
-    && rm -rf /var/lib/apt/lists/*
+lint:
+	flake8 . --max-line-length=100 --per-file-ignores="test_consumer_behavior.py:F401"
 
-# install Python deps first for layer caching
-COPY requirements.txt .
-RUN pip install -r requirements.txt
+test:
+	pytest -q
 
-# copy project
-COPY . .
+run:
+	python Consumer_Behavior.py
 
-# default command runs your analysis; override in `docker run` as needed
-CMD ["python", "Consumer_Behavior.py"]
+clean:
+	@echo "Cleaning build artifacts and caches..."
+	@rm -f ads_by_device.png || true
+	@find . -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
+
 
 
