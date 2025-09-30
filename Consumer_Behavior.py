@@ -86,16 +86,7 @@ def main() -> None:
     consumer_data = load_data("Ecommerce_Consumer_Behavior_Analysis_Data.csv")
 
     # 2) Basic inspect
-    print("---- HEAD ----")
-    print(consumer_data.head())
-    print("---- INFO ----")
-    print(consumer_data.info())
-    print("---- DESCRIBE ----")
-    print(consumer_data.describe())
-    print(
-        "Missing Engagement (raw):",
-        consumer_data["Engagement_with_Ads"].isna().sum(),
-    )
+    summarize_consumer_data_dataframe(consumer_data)
 
     # 3) Clean
     consumer_data = clean_engagement(consumer_data)
@@ -132,6 +123,19 @@ def main() -> None:
     print("Model coefficients:", model.coef_)
     print("Intercept:", model.intercept_)
     print("Feature columns:", X.columns.tolist())
+
+
+def summarize_consumer_data_dataframe(consumer_data):
+    print("---- HEAD ----")
+    print(consumer_data.head())
+    print("---- INFO ----")
+    print(consumer_data.info())
+    print("---- DESCRIBE ----")
+    print(consumer_data.describe())
+    print(
+        "Missing Engagement (raw):",
+        consumer_data["Engagement_with_Ads"].isna().sum(),
+    )
 
 
 if __name__ == "__main__":
