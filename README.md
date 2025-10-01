@@ -185,11 +185,9 @@ Outputs include console logs and the figure `ads_by_device.png` saved in the rep
 ---
 ## Screenshots - Tests Passed
 
-### CI Success
-![CI Tests Passed](<Screenshots\CI passed test.PNG>)
+![CI Tests Passed](./Screenshots/CI%20passed%20test.PNG)
+![Local Tests Passed](./Screenshots/Passed%20Tests.PNG)
 
-### Local Tests Passing
-![Local Tests Passed](<Screenshots\Passed Tests.PNG>)
 
 
 
