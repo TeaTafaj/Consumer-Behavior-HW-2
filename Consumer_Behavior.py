@@ -42,15 +42,35 @@ def group_device_ads_mean(consumer_data: pd.DataFrame) -> pd.Series:
 
 
 def plot_device_ads(device_ads: pd.Series, out_path: str = "ads_by_device.png") -> None:
-    import matplotlib.pyplot as plt  # import inside function
+    """
+    Save a clean, readable chart of mean engagement score by device.
+    device_ads: pd.Series indexed by device with mean scores (0=None…3=High)
+    """
+    import matplotlib.pyplot as plt
 
-    ax = device_ads.plot(kind="bar")
-    ax.set_title("Average Engagement with Ads by Device (0=None, 3=High)")
-    ax.set_ylabel("Average Engagement Score")
-    ax.set_xlabel("Device")
+    # safety: drop NAs and sort so the highest shows at the top in an hbar
+    s = device_ads.dropna().sort_values(ascending=True)
+
+    fig, ax = plt.subplots(figsize=(9, 5), dpi=150)
+    bars = ax.barh(s.index.astype(str), s.values)
+
+    # value labels at the end of each bar
+    ax.bar_label(bars, labels=[f"{v:.2f}" for v in s.values], padding=4)
+
+    # titles & labels
+    ax.set_title(
+        "Average Engagement with Ads by Device\n(Score: 0=None, …, 3=High)", pad=10
+    )
+    ax.set_xlabel("Average Engagement Score")
+    ax.set_ylabel("Device")
+
+    # grid & limits
+    ax.set_xlim(0, 3)  # scoring scale is 0–3
+    ax.grid(axis="x", linestyle="--", alpha=0.3)
+
     plt.tight_layout()
-    plt.savefig(out_path)
-    plt.close()
+    plt.savefig(out_path, bbox_inches="tight")
+    plt.close(fig)
 
 
 def prepare_ml_frame(consumer_data: pd.DataFrame) -> Tuple[pd.DataFrame, pd.Series]:
