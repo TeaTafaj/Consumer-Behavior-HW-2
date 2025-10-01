@@ -43,7 +43,7 @@ Date: _September 30th 2025_
 ### Key Findings (Snapshot)
 - Engagement labels are standardized to **None / Low / Medium / High** and mapped to **0–3**.
 - Average engagement by device is computed and plotted in `ads_by_device.png`.
-- A simple logistic regression predicts **High** engagement using device features and reports accuracy/coefficients.
+- A simple **device-only** logistic regression achieves ~**0.644** accuracy vs ~**0.635** baseline — a **small lift** (device alone has limited predictive power).
 
 ### Implications for Marketers
 1. If a device segment shows higher engagement, prioritize **placements, creatives, and bids** there.  
@@ -153,7 +153,7 @@ See commit diffs also in the screenshots folder for before/after.
 3. **Slice** — `filter_smartphone_users()` returns only smartphone rows (example transformation).  
 4. **Aggregate** — `group_device_ads_mean()` computes mean engagement by device (0=None … 3=High).  
 5. **Visualize** — `plot_device_ads()` saves `ads_by_device.png`.  
-6. **Model** — `prepare_ml_frame()` + `train_and_eval_logreg()` build a simple classifier and print accuracy.
+6. **Model** — `prepare_ml_frame()` + `train_and_eval_logreg()` fit a **device-only** logistic regression (one-hot device dummies) to check signal for “High” engagement; reports held-out accuracy and coefficients.
 
 ### Analysis Workflow
 ```bash
@@ -170,7 +170,19 @@ Outputs include console logs and the figure `ads_by_device.png` saved in the rep
 - A minimal model checks whether device alone has signal for **High** engagement.
 
 ---
+---
 
+## Results & Takeaways
+
+<p align="center">
+  <img src="ads_by_device.png" alt="Average engagement score by device (0=None … 3=High)" width="760">
+</p>
+
+- **Device-only signal is limited.** In our runs, logistic-regression accuracy was **≈ 0.644** vs **≈ 0.635** baseline — a small lift.
+- **Averages differ by device** (Desktop > Tablet ≈ Smartphone here), but not enough to make device a strong standalone predictor of “High” engagement.
+- **Practical note:** treat device as a **supporting feature**; combine with richer signals (e.g., visit frequency, region, campaign/copy) for meaningful lift.
+
+---
 ## Screenshots - Tests Passed
 
 ### CI Success
