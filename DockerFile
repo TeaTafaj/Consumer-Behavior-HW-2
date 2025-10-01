@@ -1,5 +1,6 @@
 FROM python:3.11-slim
 
+# non-interactive apt & headless matplotlib
 ENV DEBIAN_FRONTEND=noninteractive \
     MPLBACKEND=Agg \
     PYTHONDONTWRITEBYTECODE=1 \
@@ -8,16 +9,16 @@ ENV DEBIAN_FRONTEND=noninteractive \
 
 WORKDIR /app
 
-# Install make so Makefile targets work in the container
+# install make so you can run your Makefile targets inside the container
 RUN apt-get update && apt-get install -y --no-install-recommends make \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Python deps first for layer caching
+# install Python deps first for layer caching
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-# Copy project files
+# copy project
 COPY . .
 
-# Default command runs the main analysis; override in `docker run` if needed
+# default command runs your analysis; override in `docker run` as needed
 CMD ["python", "Consumer_Behavior.py"]

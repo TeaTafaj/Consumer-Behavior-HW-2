@@ -136,9 +136,12 @@ The badge at the top links to recent runs.
 
 ## Code Refactoring
 - **Rename:** Standardized `df` → `consumer_data` for clarity.  
+![alt text](<Screenshots/before-after 1.PNG>)
+![alt text](<Screenshots/before-after 2.PNG>)
+![alt text](<Screenshots/before-after 3.PNG>)
 - **Extract Method:** Created `summarize_dataframe()` to encapsulate head/info/describe/NA prints.
-
-See commit diffs in the screenshots section for before/after.
+![alt text](<Screenshots/refractor extract method sc.PNG>)
+See commit diffs also in the screenshots folder for before/after.
 
 ---
 
@@ -168,22 +171,15 @@ Outputs include console logs and the figure `ads_by_device.png` saved in the rep
 
 ---
 
-## Screenshots
+## Screenshots - Tests Passed
 
 ### CI Success
-![CI workflow success](images/ci_success.png)
+![CI Tests Passed](<Screenshots\CI passed test.PNG>)
 
 ### Local Tests Passing
-![Local tests passing](images/tests_pass.png)
+![Local Tests Passed](<Screenshots\Passed Tests.PNG>)
 
-### Refactor Diffs
-**Rename (before → after)**  
-![rename diff 1](images/rename_diff_1.png)  
-![rename diff 2](images/rename_diff_2.png)  
-![rename diff 3](images/rename_diff_3.png)
 
-**Extract Method (before → after)**  
-![extract method diff](images/extract_method_diff.png)
 
 ---
 
