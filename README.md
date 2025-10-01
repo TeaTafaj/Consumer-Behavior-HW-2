@@ -1,146 +1,201 @@
 
-# Consumer Behavior HW 2  
-
 [![CI](https://github.com/TeaTafaj/Consumer-Behavior-HW-2/actions/workflows/ci.yml/badge.svg)](https://github.com/TeaTafaj/Consumer-Behavior-HW-2/actions/workflows/ci.yml)
 
+# Consumer Behavior – Ads Engagement Analysis
 
-This project explores **consumer behavior** using Python (Pandas, Matplotlib, scikit-learn). The analysis investigates the relationship between **device type** and **ad engagement**, includes data cleaning, filtering, grouping, visualization, and a first machine learning experiment.  
-Dataset: Ecommerce Consumer Behavior Data from Kaggle, https://www.kaggle.com/datasets/salahuddinahmedshuvo/ecommerce-consumer-behavior-analysis-data
+Identifying whether **smartphone users** engage more with ads than users on other devices.
 
----
-
-## 📂 Repository Structure  
-
-├── Consumer_Behavior.py # main analysis script
-├── Ecommerce_Consumer_Behavior_Analysis_Data.csv # dataset
-├── requirements.txt # dependencies
-├── Makefile # automation commands
-├── test_consumer_behavior.py # simple pytest tests
-├── .github/workflows/ci.yml # GitHub Actions CI workflow
-└── README.md # this file
-
+Tea Tafaj  
+Data Engineering Systems (IDS 706) — Duke University  
+Date: _September 30th 2025_
 
 ---
 
-## 🎯 Hypothesis  
-
-Shoppers using Smartphone devices have higher engagement with ads than shoppers using desktop.   
-
----
-
-## 🔎 Steps Performed  
-
-### 1. Data Import & Inspection  
-- Loaded CSV using Pandas  
-- Explored dataset with `.head()`, `.info()`, `.describe()`  
-- Checked for missing values and unique categories  
-
-### 2. Data Cleaning  
-- Dropped rows with missing `Engagement_with_Ads` values  
-- Standardized text values ('None', `Low`, `Medium`, `High`)  
-- Converted engagement to numeric scores ('None'=0,`Low=1, Medium=2, High=3`)  
-
-### 3. Filtering  
-- Extracted subsets of data (e.g., only smartphone users)  
-
-### 4. Grouping  
-- Grouped by `Device_Used_for_Shopping`  
-- Computed **average engagement score per device**  
-
-### 5. Visualization  
-- Bar chart comparing engagement score by device  
-- Output file: **`ads_by_device.png`**  
-
-### 6. Machine Learning Experiment  
-- Logistic Regression: predict whether a user’s ad engagement is **High (yes/no)** from device type  
-- Accuracy: ~**64%**  
-- Coefficients indicated desktop users were slightly more likely to have high engagement  
+## Table of Contents
+- Research Summary
+  - Research Question
+  - Key Findings (Snapshot)
+  - Implications for Marketers
+- Project Setup
+  - File Structure
+  - Tech Stack & Tools
+  - Dependencies
+  - Quick Start
+  - CI/CD Pipeline
+  - Code Refactoring
+- Analysis
+  - Data Pipeline
+  - Analysis Workflow
+  - Visualizations
+  - How I Reached My Conclusions
+- Screenshots
+- Troubleshooting
+- Data Source
+- Author
 
 ---
 
-## 📊 Findings  
+## Research Summary
 
-- **Result:** contrary to the initial hypothesis, **desktop users** had the highest average engagement (≈2.15), compared to smartphones (≈2.01) and tablets (≈2.00).  
-- **Interpretation:** this dataset suggests that desktop shoppers may engage more with ads than mobile users — possibly due to a more focused browsing context.  
+### Research Question
+> **Do smartphone users have higher engagement with ads than users on other devices?**
 
-![Ads by Device](ads_by_device.png)  
+### Key Findings (Snapshot)
+- Engagement labels are standardized to **None / Low / Medium / High** and mapped to **0–3**.
+- Average engagement by device is computed and plotted in `ads_by_device.png`.
+- A simple logistic regression predicts **High** engagement using device features and reports accuracy/coefficients.
+
+### Implications for Marketers
+1. If a device segment shows higher engagement, prioritize **placements, creatives, and bids** there.  
+2. Track numeric scores to measure **uplift** after experiments.  
+3. Extend features (e.g., region/frequency) to improve predictive power.
 
 ---
 
-## ⚙️ Usage  
+## Project Setup
 
-### Prerequisites  
-- Python 3.11+  
-- Install dependencies:  
+### File Structure
+```
+.
+├── Consumer_Behavior.py            # main analysis script (entry point)
+├── Ecommerce_Consumer_Behavior_Analysis_Data.csv
+├── test_consumer_behavior.py       # unit tests
+├── requirements.txt
+├── Makefile                        # install, format, lint, test, run, clean
+├── Dockerfile                      # containerized runtime
+├── images/                         # screenshots for submission
+└── .github/workflows/ci.yml        # CI pipeline (flake8, black --check, pytest)
+```
+
+### Tech Stack & Tools
+**Core:** Python 3.11, pandas, scikit-learn, matplotlib  
+**Dev:** pytest, black, flake8, Makefile, GitHub Actions, Docker
+
+### Dependencies
+Installed via `requirements.txt` plus dev tools:
+```
+pandas
+scikit-learn
+matplotlib
+pytest
+black
+flake8
+```
+
+### Quick Start
+
+> **Windows note:** If `make` isn’t available, either install it (GnuWin32.Make) or run the Python commands shown below.
+
+1) **Install**
 ```bash
+python -m pip install --upgrade pip
 pip install -r requirements.txt
+pip install black flake8 pytest
+# or
+make install
+```
 
-Run the analysis
+2) **Run the analysis**
+```bash
 python Consumer_Behavior.py
-make install   # install dependencies
-make lint      # run flake8 checks
-make test      # run pytest tests
-make run       # run the analysis
-make clean     # clean up cache and generated files
+# or
+make run
+```
 
-#✅ Tests
-
--pytest provides simple tests, e.g.:
-
--Ensure dataset loads correctly
-
--Confirm cleaning step adds the expected Engagement_with_Ads_Score column
-
-Run: pytest -q
-
-## 🐳 Docker
-
-### Setup
-- **Prereqs**: Install Docker (Docker Desktop on Windows/macOS) and make sure the engine is running.
-- Build the image (from the repo root):
+3) **Quality checks**
 ```bash
-docker build -t consumer-behavior .
+# format
+python -m black .
+# or
+make format
+
+# lint
+flake8 . --max-line-length=100 --per-file-ignores="test_consumer_behavior.py:F401"
+# or
+make lint
+
+# tests
+pytest -q
+# or
+make test
 ```
 
-### Use
-**Run the analysis (default command in the image):**
+---
+
+## CI/CD Pipeline
+The workflow in `.github/workflows/ci.yml` runs on every push/PR:
+1. Set up Python 3.11  
+2. Install dependencies  
+3. **flake8** (lint, `--max-line-length=100`)  
+4. **black --check** (format check)  
+5. **pytest** (unit tests)  
+
+The badge at the top links to recent runs.
+
+---
+
+## Code Refactoring
+- **Rename:** Standardized `df` → `consumer_data` for clarity.  
+- **Extract Method:** Created `summarize_dataframe()` to encapsulate head/info/describe/NA prints.
+
+See commit diffs in the screenshots section for before/after.
+
+---
+
+## Analysis
+
+### Data Pipeline
+1. **Load** — `load_data(path)` reads the CSV.  
+2. **Clean** — `clean_engagement()` trims/title-cases engagement labels and maps them to numeric scores with `ENGAGEMENT_MAP`.  
+3. **Slice** — `filter_smartphone_users()` returns only smartphone rows (example transformation).  
+4. **Aggregate** — `group_device_ads_mean()` computes mean engagement by device (0=None … 3=High).  
+5. **Visualize** — `plot_device_ads()` saves `ads_by_device.png`.  
+6. **Model** — `prepare_ml_frame()` + `train_and_eval_logreg()` build a simple classifier and print accuracy.
+
+### Analysis Workflow
 ```bash
-docker run --rm consumer-behavior
+make run        # or: python Consumer_Behavior.py
 ```
+Outputs include console logs and the figure `ads_by_device.png` saved in the repo root.
 
-**Run with live code edits (mount your working directory)**
-- macOS/Linux:
-```bash
-docker run --rm -it -v "$(pwd)":/app -w /app consumer-behavior python Consumer_Behavior.py
-```
-- Windows PowerShell:
-```powershell
-docker run --rm -it -v ${PWD}:/app -w /app consumer-behavior python Consumer_Behavior.py
-```
+### Visualizations
+- `ads_by_device.png` — bar chart of mean engagement score by device (descending).
 
-**Run tests (pytest)**
-```bash
-docker run --rm -it -v "$(pwd)":/app -w /app consumer-behavior pytest -q
-```
+### How I Reached My Conclusions
+- Cleaning ensures consistent labels and preserves true missing values.  
+- Device-level aggregation shows relative engagement levels per device.  
+- A minimal model checks whether device alone has signal for **High** engagement.
 
-**Run Makefile targets inside the container**
-(Requires the provided Dockerfile—which includes `make`—to be built as above.)
-- macOS/Linux:
-```bash
-docker run --rm -it -v "$(pwd)":/app -w /app consumer-behavior make test     # runs pytest
-docker run --rm -it -v "$(pwd)":/app -w /app consumer-behavior make run      # runs analysis
-docker run --rm -it -v "$(pwd)":/app -w /app consumer-behavior make lint     # runs flake8 (if defined)
-```
-- Windows PowerShell:
-```powershell
-docker run --rm -it -v ${PWD}:/app -w /app consumer-behavior make test
-docker run --rm -it -v ${PWD}:/app -w /app consumer-behavior make run
-docker run --rm -it -v ${PWD}:/app -w /app consumer-behavior make lint
-```
+---
 
-**Notes**
-- The container uses a headless Matplotlib backend, so plots save to files (e.g., `ads_by_device.png`) without a display.
+## Screenshots
 
-**Test Screenshot**
-![alt text](image.png)
+### CI Success
+![CI workflow success](images/ci_success.png)
 
+### Local Tests Passing
+![Local tests passing](images/tests_pass.png)
+
+### Refactor Diffs
+**Rename (before → after)**  
+![rename diff 1](images/rename_diff_1.png)  
+![rename diff 2](images/rename_diff_2.png)  
+![rename diff 3](images/rename_diff_3.png)
+
+**Extract Method (before → after)**  
+![extract method diff](images/extract_method_diff.png)
+
+---
+
+## Troubleshooting
+- **Windows & make:** If `make` isn’t found, add `C:\Program Files (x86)\GnuWin32\bin` to PATH or run the underlying Python commands directly.  
+- **Black on notebooks:** This project formats `.py`. For notebooks, use `pip install "black[jupyter]"`.  
+- **Line length errors:** CI/Makefile use `--max-line-length=100`.
+
+---
+
+## Data Source
+Course-provided CSV: `Ecommerce_Consumer_Behavior_Analysis_Data.csv`.
+
+## Author
+Tea Tafaj — Duke University, IDS 706.
